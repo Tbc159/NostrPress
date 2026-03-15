@@ -104,4 +104,4 @@
   // Esecuzione
   handleExternalLinks();
   await loadNostrContent();
-}();
+});
