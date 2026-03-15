@@ -73,7 +73,7 @@ function buildContext(config, npub, pubkey, profile, articles) {
     site: {
       title: siteTitle,
       description: siteDescription,
-      base_url: config.site.base_url
+      base_url: config.site.base_url,
       env: {
         NPUB: process.env.NPUB
       }
