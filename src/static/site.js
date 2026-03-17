@@ -93,12 +93,18 @@
         const title = article.tags.find(t => t[0] === 'title')?.[1] || "Senza titolo";
         const summary = article.tags.find(t => t[0] === 'summary')?.[1] || article.content.substring(0, 150) + "...";
         const slug = article.tags.find(t => t[0] === 'd')?.[1];
+        const image = article.tags.find(t => t[0] === 'image')?.[1] || null;
         const date = new Date(article.created_at * 1000).toISOString().split('T')[0];
 
         container.insertAdjacentHTML('beforeend', `
           <article class="group relative flex flex-col">
             <a href="/${slug}.html" class="flex flex-col h-full">
               <div class="relative rounded-2xl border border-slate-200 bg-white overflow-hidden transition-all duration-500 ease-out hover:border-blue-300 hover:shadow-xl hover:shadow-blue-500/10 hover:-translate-y-1 flex flex-col h-full">
+                ${image ? `
+                <div class="relative h-48 overflow-hidden flex-shrink-0">
+                  <div class="absolute inset-0 bg-gradient-to-t from-black/20 to-transparent z-10"></div>
+                  <img src="${image}" alt="${title}" class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105" loading="lazy" />
+                </div>` : ''}
                 <div class="relative p-6 space-y-3 flex-1 flex flex-col">
                   <div class="flex items-center gap-2 text-xs">
                     <time class="font-medium text-slate-500">${date}</time>
