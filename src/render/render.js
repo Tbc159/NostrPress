@@ -123,11 +123,8 @@ export function renderSite(context, outputDir) {
     }
   }
 
-  for (const article of articlesSorted) {
-    const relatedArticles = findRelatedArticles(article, articlesSorted);
-    const articleHtml = env.render("article.njk", { ...context, article, relatedArticles });
-    writeFile(path.join(outputDir, `${article.slug}.html`), articleHtml);
-  }
+  const articleViewerHtml = env.render("article-viewer.njk", { ...context });
+  writeFile(path.join(outputDir, "article.html"), articleViewerHtml);
 
   for (const { name, slug, articles } of tagMap.values()) {
     const tagHtml = env.render("tag.njk", { ...context, tag: name, tagSlug: slug, articles });
