@@ -93,12 +93,21 @@
         const title = article.tags.find(t => t[0] === 'title')?.[1] || "Senza titolo";
         const summary = article.tags.find(t => t[0] === 'summary')?.[1] || article.content.substring(0, 150) + "...";
         const slug = article.tags.find(t => t[0] === 'd')?.[1];
+        const date = new Date(article.created_at * 1000).toISOString().split('T')[0];
 
         container.insertAdjacentHTML('beforeend', `
-          <article class="p-6 border rounded-2xl bg-white mb-6 shadow-sm hover:shadow-md transition">
-            <h2 class="text-2xl font-bold mb-2">${title}</h2>
-            <p class="text-slate-600 mb-4">${summary}</p>
-            <a href="/${slug}.html" class="text-blue-600 font-medium">Leggi tutto →</a>
+          <article class="group relative flex flex-col">
+            <a href="/${slug}.html" class="flex flex-col h-full">
+              <div class="relative rounded-2xl border border-slate-200 bg-white overflow-hidden transition-all duration-500 ease-out hover:border-blue-300 hover:shadow-xl hover:shadow-blue-500/10 hover:-translate-y-1 flex flex-col h-full">
+                <div class="relative p-6 space-y-3 flex-1 flex flex-col">
+                  <div class="flex items-center gap-2 text-xs">
+                    <time class="font-medium text-slate-500">${date}</time>
+                  </div>
+                  <h3 class="text-xl font-bold tracking-tight text-slate-900 group-hover:text-blue-600 transition-colors duration-300 line-clamp-2">${title}</h3>
+                  <p class="text-sm text-slate-600 leading-relaxed line-clamp-3 flex-1">${summary}</p>
+                </div>
+              </div>
+            </a>
           </article>
         `);
       });
