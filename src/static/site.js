@@ -98,7 +98,7 @@
 
         container.insertAdjacentHTML('beforeend', `
           <article class="group relative flex flex-col">
-            <a href="/article.html?slug=${slug}" class="flex flex-col h-full">
+            <a href="/${slug}.html" class="flex flex-col h-full">
               <div class="relative rounded-2xl border border-slate-200 bg-white overflow-hidden transition-all duration-500 ease-out hover:border-blue-300 hover:shadow-xl hover:shadow-blue-500/10 hover:-translate-y-1 flex flex-col h-full">
                 ${image ? `
                 <div class="relative h-48 overflow-hidden flex-shrink-0">
@@ -125,87 +125,4 @@
   };
 
   await loadNostrContent();
-  await loadArticlePage();
-  handleExternalLinks();
 })();
-
-async function loadArticlePage() {
-  if (!window.location.pathname.endsWith('/article.html')) return;
-
-  const slug = new URLSearchParams(window.location.search).get('slug');
-  const loading = document.getElementById('article-loading');
-  const content = document.getElementById('article-content');
-  const error = document.getElementById('article-error');
-
-  const showError = () => {
-    loading.classList.add('hidden');
-    error.classList.remove('hidden');
-  };
-
-  if (!slug) { showError(); return; }
-
-  const npub = window.NOSTR_CONFIG?.npub;
-  const pubkey = getPubkeyHex(npub);
-  if (!pubkey) { showError(); return; }
-
-  try {
-    const pool = new window.NostrTools.SimplePool();
-    const relays = ['wss://relay.damus.io', 'wss://nos.lol', 'wss://relay.nostr.band'];
-
-    const events = await pool.querySync(relays, {
-      authors: [pubkey],
-      kinds: [30023],
-      '#d': [slug]
-    });
-
-    if (!events.length) { showError(); return; }
-
-    const event = events[0];
-    const title = event.tags.find(t => t[0] === 'title')?.[1] || 'Senza titolo';
-    const image = event.tags.find(t => t[0] === 'image')?.[1] || null;
-    const date = new Date(event.created_at * 1000).toISOString().split('T')[0];
-    const tags = event.tags.filter(t => t[0] === 't').map(t => t[1]);
-    const words = event.content.trim().split(/\s+/).length;
-    const readingTime = Math.ceil(words / 200);
-
-    // Populate title and metadata
-    document.title = `${title} · ${document.title}`;
-    document.getElementById('article-title').textContent = title;
-    document.getElementById('article-date').textContent = date;
-
-    if (readingTime > 0) {
-      document.getElementById('article-reading-time-value').textContent = readingTime;
-      document.getElementById('article-reading-time').classList.remove('hidden');
-    }
-
-    // Image
-    if (image) {
-      document.getElementById('article-image').src = image;
-      document.getElementById('article-image').alt = title;
-      document.getElementById('article-image-container').classList.remove('hidden');
-    }
-
-    // Tags
-    if (tags.length) {
-      const tagsContainer = document.getElementById('article-tags');
-      tags.forEach(tag => {
-        const a = document.createElement('a');
-        a.href = `/tags/${tag}/`;
-        a.className = 'group relative inline-flex items-center rounded-full border border-slate-200 bg-slate-50 px-4 py-2 text-sm font-medium text-slate-700 hover:border-blue-300 hover:bg-blue-50 hover:text-blue-700 transition-all duration-300';
-        a.textContent = `#${tag}`;
-        tagsContainer.appendChild(a);
-      });
-    }
-
-    // Render markdown
-    document.getElementById('article-body').innerHTML = window.marked.parse(event.content);
-
-    // Show article
-    loading.classList.add('hidden');
-    content.classList.remove('hidden');
-
-  } catch (err) {
-    console.error('[NostrPress] Errore caricamento articolo:', err);
-    showError();
-  }
-}

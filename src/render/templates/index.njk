@@ -82,7 +82,7 @@
     {% if articles.length > 0 %}
     {% set featured = articles[0] %}
     <article class="group relative">
-      <a href="{{ site.base_url }}/article.html?slug={{ featured.slug }}" class="block">
+      <a href="{{ site.base_url }}/{{ featured.slug }}.html" class="block">
         <div class="relative rounded-2xl border border-slate-200 bg-white overflow-hidden transition-all duration-500 ease-out hover:border-blue-300 hover:shadow-2xl hover:shadow-blue-500/10 hover:-translate-y-1">
           <div class="absolute inset-0 rounded-2xl bg-gradient-to-br from-blue-500/0 to-indigo-500/0 opacity-0 group-hover:opacity-5 transition-opacity duration-500"></div>
           
@@ -142,7 +142,7 @@
         {% for article in articles %}
         {% if not loop.first %}
         <article class="group relative flex flex-col">
-          <a href="{{ site.base_url }}/article.html?slug={{ article.slug }}" class="flex flex-col h-full">
+          <a href="{{ site.base_url }}/{{ article.slug }}.html" class="flex flex-col h-full">
             <div class="relative rounded-2xl border border-slate-200 bg-white overflow-hidden transition-all duration-500 ease-out hover:border-blue-300 hover:shadow-xl hover:shadow-blue-500/10 hover:-translate-y-1 flex flex-col h-full">
               <div class="absolute inset-0 rounded-2xl bg-gradient-to-br from-blue-500/0 to-indigo-500/0 opacity-0 group-hover:opacity-5 transition-opacity duration-500"></div>
               
