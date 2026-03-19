@@ -85,14 +85,6 @@ function buildContext(config, npub, pubkey, profile, articles) {
 }
 
 function writeStaticAssets(outputDir, rootDir) {
-  const srcJs = path.join(rootDir, "src/static/site.js");
-  const destJs = path.join(outputDir, "js", "site.js");
-  if (fs.existsSync(srcJs)) {
-    fs.copyFileSync(srcJs, destJs);
-  } else {
-    fs.writeFileSync(destJs, "");
-  }
-
   // Copy print.css
   const srcPrintCss = path.join(rootDir, "src/styles/print.css");
   const destPrintCss = path.join(outputDir, "css", "print.css");
