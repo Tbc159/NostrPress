@@ -37,6 +37,7 @@ jobs:
         run: npm run build
         env:
           NPUB: ${{ secrets.NPUB }}
+          BASE_URL: ${{ secrets.BASE_URL }}
 
       - name: Setup Pages
         uses: actions/configure-pages@v5

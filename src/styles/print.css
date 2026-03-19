@@ -28,6 +28,7 @@
   button,
   [role="complementary"],
   [aria-label="Social Share"],
+  [aria-label="Lightning tip"],
   .border-t.border-slate-100 {
     display: none !important;
   }

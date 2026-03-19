@@ -127,6 +127,14 @@
           </svg>
           Copy Link
         </button>
+        {% if author.profile.lud16 %}
+        <span class="border-l border-slate-200 pl-3">
+          <a href="lightning:{{ author.profile.lud16 }}" class="inline-flex items-center gap-2 px-3 py-1.5 text-sm font-medium text-amber-600 hover:text-amber-700 hover:bg-amber-50 rounded-lg transition-all duration-200" aria-label="Send a Lightning tip to the author">
+            <svg class="w-4 h-4" fill="currentColor" viewBox="0 0 24 24" aria-hidden="true"><path d="M13 2L3 14h8l-1 8 10-12h-8l1-8z"></path></svg>
+            Zap
+          </a>
+        </span>
+        {% endif %}
       </div>
 
       <!-- Open elsewhere -->
@@ -155,6 +163,28 @@
     <div class="prose prose-lg xl:prose-xl max-w-none" itemprop="articleBody">
       {{ article.html | safe }}
     </div>
+
+    {% if author.profile.lud16 %}
+    <div class="mt-16 pt-12 border-t border-slate-200" aria-label="Lightning tip">
+      <div class="flex flex-col sm:flex-row items-center gap-6 p-8 rounded-2xl border border-amber-200 bg-gradient-to-r from-amber-50 to-yellow-50">
+        <div class="flex-shrink-0">
+          <div class="w-16 h-16 rounded-2xl bg-amber-100 flex items-center justify-center">
+            <svg class="w-8 h-8 text-amber-600" fill="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+              <path d="M13 2L3 14h8l-1 8 10-12h-8l1-8z"></path>
+            </svg>
+          </div>
+        </div>
+        <div class="flex-1 text-center sm:text-left space-y-1">
+          <h3 class="text-lg font-bold text-slate-900">Enjoyed this article?</h3>
+          <p class="text-sm text-slate-600">Support the author with a Lightning tip.</p>
+        </div>
+        <a href="lightning:{{ author.profile.lud16 }}" class="inline-flex items-center gap-2 px-6 py-3 bg-amber-500 hover:bg-amber-600 text-white font-semibold rounded-xl shadow-lg shadow-amber-500/25 hover:shadow-amber-500/40 transition-all duration-300 hover:-translate-y-0.5" aria-label="Send a Lightning tip">
+          <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 24 24" aria-hidden="true"><path d="M13 2L3 14h8l-1 8 10-12h-8l1-8z"></path></svg>
+          Zap
+        </a>
+      </div>
+    </div>
+    {% endif %}
   </article>
 
   <!-- Related Articles -->
